@@ -7,11 +7,11 @@ package com.bankqueue.datastructures;
  * peek    → O(1)  |  toList  → O(n)
  * └─────────────────────────────────────────────┘
  */
-class CustomQueue<T> {
+public class CustomQueue<T> {
     private Node<T> front, rear;
     private int size;
 
-    void enqueue(T data) {
+    public void enqueue(T data) {
         Node<T> n = new Node<>(data);
         if (rear == null) {
             front = rear = n;
@@ -22,7 +22,7 @@ class CustomQueue<T> {
         size++;
     }
 
-    T dequeue() {
+    public T dequeue() {
         if (isEmpty()) throw new RuntimeException("Kuyruk boş!");
         T d = front.data;
         front = front.next;
@@ -31,25 +31,25 @@ class CustomQueue<T> {
         return d;
     }
 
-    T peek() {
+    public T peek() {
         return isEmpty() ? null : front.data;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    void clear() {
+    public void clear() {
         front = null;
         rear = null;
         size = 0;
     }
 
-    java.util.List<T> toList() {
+    public java.util.List<T> toList() {
         java.util.List<T> list = new java.util.ArrayList<>(size);
         Node<T> cur = front;
         while (cur != null) {

@@ -1,26 +1,28 @@
 package com.bankqueue.model;
 
+import com.bankqueue.datastructures.CustomQueue;
+
 import java.util.List;
 
 // ═══════════════════════════════════════════════════════════════
 //  GİŞE MODELİ
 // ═══════════════════════════════════════════════════════════════
-class Cashier {
+public class Cashier {
     private final int id;
     private final CustomQueue<Customer> queue = new CustomQueue<>();
     private boolean open = true;
     private int totalServed;
     private long totalWait;
 
-    Cashier(int id) {
+    public Cashier(int id) {
         this.id = id;
     }
 
-    void enqueue(Customer c) {
+    public void enqueue(Customer c) {
         queue.enqueue(c);
     }
 
-    Customer serve(int simTime) {
+    public Customer serve(int simTime) {
         if (queue.isEmpty()) return null;
         Customer c = queue.dequeue();
         c.serve(simTime, id);
@@ -29,43 +31,43 @@ class Cashier {
         return c;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    boolean isOpen() {
+    public boolean isOpen() {
         return open;
     }
 
-    void setOpen(boolean v) {
+    public void setOpen(boolean v) {
         open = v;
     }
 
-    int queueSize() {
+    public int queueSize() {
         return queue.size();
     }
 
-    boolean queueEmpty() {
+    public boolean queueEmpty() {
         return queue.isEmpty();
     }
 
-    Customer peek() {
+    public Customer peek() {
         return queue.peek();
     }
 
-    List<Customer> list() {
+    public List<Customer> list() {
         return queue.toList();
     }
 
-    int getTotalServed() {
+    public int getTotalServed() {
         return totalServed;
     }
 
-    double avgWait() {
+    public double avgWait() {
         return totalServed == 0 ? 0 : (double) totalWait / totalServed;
     }
 
-    void reset() {
+    public void reset() {
         queue.clear();
         totalServed = 0;
         totalWait = 0;

@@ -1,9 +1,12 @@
 package com.bankqueue.simulation;
 
-import src.com.bankqueue.model.BankData;
+import com.bankqueue.model.BankData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bankqueue.model.*;
+import com.bankqueue.datastructures.*;
 
 /**
  * ┌─────────────────────────────────────────────┐
@@ -14,22 +17,21 @@ import java.util.List;
  */
 public class SimulationEngine {
 
-    // ── Durum ─────────────────────────────────────────────────────
-    int     simTime      = 0;
-    int     totalServed  = 0;
+    public int     simTime      = 0;
+    public int     totalServed  = 0;
     long    totalWait    = 0;
-    int     cashierCount = 2;
+    public int     cashierCount = 2;
     private int autoNameIdx = 0;
 
-    Cashier[]              cashiers;
-    MinHeap<Appointment>   apptHeap = new MinHeap<>();
-    List<Customer>         history  = new ArrayList<>();
+    public Cashier[]              cashiers;
+    public MinHeap<Appointment>   apptHeap = new MinHeap<>();
+    public List<Customer>         history  = new ArrayList<>();
 
-    // Grafik verileri
-    List<Integer> waitSamples  = new ArrayList<>();
-    List<Integer> queueSamples = new ArrayList<>();
+    // Grafik veri
+    public List<Integer> waitSamples  = new ArrayList<>();
+    public List<Integer> queueSamples = new ArrayList<>();
 
-    // Olay dinleyicisi → GUI güncelleme
+    // UI güncelleme
     private EventListener listener;
 
     public interface EventListener {
@@ -37,7 +39,6 @@ public class SimulationEngine {
         void onStateChanged();
     }
 
-    // ─────────────────────────────────────────────────────────────
     public SimulationEngine() {
         initCashiers(cashierCount);
         tryLoadState();
@@ -45,7 +46,7 @@ public class SimulationEngine {
 
     public void setListener(EventListener l) { this.listener = l; }
 
-    // ── Gişe ─────────────────────────────────────────────────────
+    // Gişe
     public void initCashiers(int count) {
         cashierCount = count;
         cashiers     = new Cashier[count];
@@ -58,11 +59,11 @@ public class SimulationEngine {
         initCashiers(newCount);
         int i = 0;
         for (Customer c : pending) cashiers[(i++) % newCount].enqueue(c);
-        log("🏪  Gişe sayısı → " + newCount);
+        log("Gişe sayısı → " + newCount);
         notify_();
     }
 
-    // ── Müşteri Ekle ──────────────────────────────────────────────
+    //Müşteri Ekleme
     public void addCustomer(String name, boolean vip) {
         if (name == null || name.isBlank()) name = autoName();
         Customer.Type type = vip ? Customer.Type.VIP : Customer.Type.NORMAL;
@@ -71,12 +72,12 @@ public class SimulationEngine {
         Cashier target = leastBusy();
         target.enqueue(c);
 
-        log("✅ [" + fmt(simTime) + "]  " + c + " → Gişe #" + target.getId()
+        log("[" + fmt(simTime) + "]  " + c + " → Gişe #" + target.getId()
             + "  (kuyruk: " + target.queueSize() + ")");
         notify_();
     }
 
-    // ── Servis ────────────────────────────────────────────────────
+    //Servis
     public void serveAll() {
         boolean any = false;
         for (Cashier cs : cashiers) {
@@ -85,14 +86,14 @@ public class SimulationEngine {
                 if (c != null) { recordServed(c, cs); any = true; }
             }
         }
-        if (!any) log("⚠️  Tüm gişeler boş.");
+        if (!any) log("  Tüm gişeler boş.");
         notify_();
     }
 
     public void serveCashier(int idx) {
         if (idx >= cashiers.length) return;
         Cashier cs = cashiers[idx];
-        if (cs.queueEmpty()) { log("⚠️  Gişe #" + (idx+1) + " boş."); return; }
+        if (cs.queueEmpty()) { log("Gişe #" + (idx+1) + " boş."); return; }
         Customer c = cs.serve(simTime);
         if (c != null) recordServed(c, cs);
         notify_();
@@ -104,23 +105,23 @@ public class SimulationEngine {
         history.add(c);
         waitSamples.add(c.getWaitTime());
         BankData.appendHistory(c);
-        log("🔔 [" + fmt(simTime) + "]  " + c
+        log("[" + fmt(simTime) + "]  " + c
             + "  servis edildi  (Gişe #" + cs.getId()
             + ", Bekleme: " + c.getWaitTime() + "s)");
     }
 
-    // ── Randevu ───────────────────────────────────────────────────
+    //Randevu ekleme
     public void addAppointment(String name, int minutes) {
         if (name == null || name.isBlank()) name = autoName();
         int targetSec = simTime + minutes * 60;
         Appointment a = new Appointment(name.trim(), targetSec);
         apptHeap.insert(a);
-        log("📅 Randevu eklendi: " + a + "  [Heap: " + apptHeap.size() + "]");
+        log("Randevu eklendi: " + a + "  [Heap: " + apptHeap.size() + "]");
         BankData.saveAppointments(apptHeap);
         notify_();
     }
 
-    /** Min-Heap'ten olgunlaşan randevuları tetikle — O(log n) */
+    // Min-Heap'ten oluşan randevuları tetikle O(log n)
     public void checkAppointments() {
         while (!apptHeap.isEmpty()) {
             Appointment top = apptHeap.peekMin();
@@ -128,30 +129,29 @@ public class SimulationEngine {
                 apptHeap.extractMin();
                 Customer c = new Customer(top.getCustomerName(), simTime, Customer.Type.NORMAL);
                 cashiers[0].enqueue(c);
-                log("🔔 Randevu tetiklendi: " + top.getCustomerName()
+                log("Randevu tetiklendi: " + top.getCustomerName()
                     + " → Gişe #1  [Heap: " + apptHeap.size() + " kaldı]");
             } else break;
         }
     }
 
-    // ── Simülasyon Adımı ──────────────────────────────────────────
     public void tick() {
         simTime++;
         checkAppointments();
 
-        // Otomatik müşteri: her 6 sn
+        // her 6 saniyede yeni müşteri
         if (simTime % 6 == 0) {
             Customer.Type t = (simTime % 30 == 0) ? Customer.Type.VIP : Customer.Type.NORMAL;
             Customer c = new Customer(autoName(), simTime, t);
             Cashier tgt = leastBusy();
             tgt.enqueue(c);
-            log("🤖 Oto → " + c + " → Gişe #" + tgt.getId());
+            log("Oto → " + c + " → Gişe #" + tgt.getId());
         }
 
-        // Otomatik servis: her 9 sn
+        //her 9 saniyede bir servis
         if (simTime % 9 == 0) serveAll();
 
-        // Grafik örnekleme: her 5 sn
+        //her 5 saniyede grafik
         if (simTime % 5 == 0) {
             int totalQ = 0;
             for (Cashier cs : cashiers) totalQ += cs.queueSize();
@@ -161,7 +161,6 @@ public class SimulationEngine {
         notify_();
     }
 
-    // ── Kayıt / Yükleme ───────────────────────────────────────────
     public void save() {
         BankData.saveHistory(history);
         BankData.saveAppointments(apptHeap);
@@ -177,7 +176,7 @@ public class SimulationEngine {
         if (state.containsKey("simTime"))     simTime     = Integer.parseInt(state.get("simTime"));
         if (state.containsKey("totalServed")) totalServed = Integer.parseInt(state.get("totalServed"));
         if (state.containsKey("totalWait"))   totalWait   = Long.parseLong(state.get("totalWait"));
-        log("📂  " + loaded.size() + " müşteri + " + apptHeap.size() + " randevu yüklendi.");
+        log( loaded.size() + " müşteri + " + apptHeap.size() + " randevu yüklendi.");
         notify_();
     }
 
@@ -189,7 +188,6 @@ public class SimulationEngine {
         BankData.loadAppointments(apptHeap);
     }
 
-    // ── Sıfırla ───────────────────────────────────────────────────
     public void reset() {
         simTime = 0; totalServed = 0; totalWait = 0; autoNameIdx = 0;
         for (Cashier cs : cashiers) cs.reset();
@@ -201,7 +199,6 @@ public class SimulationEngine {
         notify_();
     }
 
-    // ── Yardımcılar ───────────────────────────────────────────────
     private Cashier leastBusy() {
         Cashier t = cashiers[0];
         for (Cashier cs : cashiers)
@@ -237,7 +234,6 @@ public class SimulationEngine {
         return names[autoNameIdx++ % names.length];
     }
 
-    /** Saniyeyi SS:DD:SS formatına çevirir */
     public static String fmt(int s) {
         return String.format("%02d:%02d:%02d", s/3600, (s%3600)/60, s%60);
     }

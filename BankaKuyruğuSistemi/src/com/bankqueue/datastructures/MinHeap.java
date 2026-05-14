@@ -8,15 +8,15 @@ package com.bankqueue.datastructures;
  * peekMin    → O(1)
  * └─────────────────────────────────────────────┘
  */
-class MinHeap<T extends Comparable<T>> {
+public class MinHeap<T extends Comparable<T>> {
     private final java.util.ArrayList<T> h = new java.util.ArrayList<>();
 
-    void insert(T item) {
+    public void insert(T item) {
         h.add(item);
         bubbleUp(h.size() - 1);
     }
 
-    T extractMin() {
+    public T extractMin() {
         if (isEmpty()) return null;
         T min = h.get(0);
         T last = h.remove(h.size() - 1);
@@ -27,23 +27,23 @@ class MinHeap<T extends Comparable<T>> {
         return min;
     }
 
-    T peekMin() {
+    public T peekMin() {
         return isEmpty() ? null : h.get(0);
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return h.isEmpty();
     }
 
-    int size() {
+    public int size() {
         return h.size();
     }
 
-    void clear() {
+    public void clear() {
         h.clear();
     }
 
-    java.util.List<T> toSortedList() {
+    public java.util.List<T> toSortedList() {
         MinHeap<T> tmp = new MinHeap<>();
         for (T item : h) tmp.insert(item);
         java.util.List<T> res = new java.util.ArrayList<>();

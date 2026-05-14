@@ -1,4 +1,6 @@
-package src.com.bankqueue.model;
+package com.bankqueue.model;
+
+import com.bankqueue.datastructures.MinHeap;
 
 import java.io.*;
 import java.util.*;

@@ -4,14 +4,15 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.util.List;
-
+import com.bankqueue.simulation.SimulationEngine;
+import com.bankqueue.ui.*;
+import com.bankqueue.model.*;
 /**
  * ┌─────────────────────────────────────────────┐
  *   ANA GUI KATMANI
  *   Sadece görünüm + SimulationEngine çağrısı.
  *   İş mantığı içermez.
  * └─────────────────────────────────────────────┘
- *
  *  Dosya yapısı:
  *  ├── theme.json          ← Renk paleti
  *  ├── Theme.java          ← JSON → Color
@@ -629,7 +630,7 @@ public class Main extends JFrame
     // ═══════════════════════════════════════════════════════════════
     //  MAIN
     // ═══════════════════════════════════════════════════════════════
-    public static void main(String[] args) {
+    static void main(String[] args) {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}
         SwingUtilities.invokeLater(Main::new);

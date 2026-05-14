@@ -1,9 +1,11 @@
 package com.bankqueue.model;
 
+import com.bankqueue.simulation.SimulationEngine;
+
 // ═══════════════════════════════════════════════════════════════
 //  RANDEVU MODELİ  (Min-Heap'te saklanır)
 // ═══════════════════════════════════════════════════════════════
-class Appointment implements Comparable<Appointment> {
+public class Appointment implements Comparable<Appointment> {
     private static int counter = 1;
 
     private final int id;
@@ -11,7 +13,7 @@ class Appointment implements Comparable<Appointment> {
     private final int scheduledSecond;
     private boolean triggered = false;
 
-    Appointment(String customerName, int scheduledSecond) {
+    public Appointment(String customerName, int scheduledSecond) {
         this.id = counter++;
         this.customerName = customerName;
         this.scheduledSecond = scheduledSecond;
@@ -26,15 +28,15 @@ class Appointment implements Comparable<Appointment> {
         return id;
     }
 
-    String getCustomerName() {
+    public String getCustomerName() {
         return customerName;
     }
 
-    int getScheduledSecond() {
+    public int getScheduledSecond() {
         return scheduledSecond;
     }
 
-    boolean isTriggered() {
+    public boolean isTriggered() {
         return triggered;
     }
 
@@ -42,19 +44,19 @@ class Appointment implements Comparable<Appointment> {
         triggered = true;
     }
 
-    static void resetCounter() {
+    public static void resetCounter() {
         counter = 1;
     }
 
-    static void setCounter(int v) {
+    public static void setCounter(int v) {
         counter = v;
     }
 
-    static int getCounter() {
+    public static int getCounter() {
         return counter;
     }
 
-    String toCsv() {
+    public String toCsv() {
         return id + "," + customerName + "," + scheduledSecond;
     }
 
