@@ -5,20 +5,15 @@ import com.bankqueue.datastructures.MinHeap;
 import java.io.*;
 import java.util.*;
 
-/**
- * ┌─────────────────────────────────────────────┐
- *   KALICI DEPOLAMA KATMANI — File I/O
- *   CSV  → müşteri geçmişi & randevular
- *   TXT  → simülasyon durumu
- * └─────────────────────────────────────────────┘
- */
+// CSV ile geçmiş tutulur Datanın tutulma mantığı içeren dosya
+
 public class BankData {
 
     private static final String HISTORY_FILE     = "bank_history.csv";
     private static final String APPOINTMENT_FILE = "bank_appointments.csv";
     private static final String STATE_FILE       = "bank_state.txt";
 
-    // ── Geçmiş ───────────────────────────────────────────────────
+    // Geçmiş
     public static void saveHistory(List<Customer> list) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(HISTORY_FILE))) {
             pw.println("id,name,arrivalSecond,servedSecond,cashierNo,type,waitTime");
@@ -59,7 +54,7 @@ public class BankData {
         return list;
     }
 
-    // ── Randevular ────────────────────────────────────────────────
+    // Randevular
     public static void saveAppointments(MinHeap<Appointment> heap) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(APPOINTMENT_FILE))) {
             pw.println("apptId,name,scheduledSecond");
@@ -86,7 +81,7 @@ public class BankData {
         } catch (IOException | NumberFormatException e) { err("Randevu yükleme", e); }
     }
 
-    // ── Durum ────────────────────────────────────────────────────
+    // Durum
     public static void saveState(int simTime, int totalServed, long totalWait) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(STATE_FILE))) {
             pw.println("simTime="      + simTime);

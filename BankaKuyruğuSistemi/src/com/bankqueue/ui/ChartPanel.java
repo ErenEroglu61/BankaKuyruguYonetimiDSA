@@ -5,13 +5,8 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.List;
 
-/**
- * ┌─────────────────────────────────────────────┐
- *   GRAFİK BİLEŞENİ
- *   Harici kütüphane yok — saf Swing ile çizim.
- *   Çizgi + bar hibrit grafik, gradient dolgu.
- * └─────────────────────────────────────────────┘
- */
+// Grafik bileşenleri
+
 public class ChartPanel extends JPanel {
 
     private final String        label;

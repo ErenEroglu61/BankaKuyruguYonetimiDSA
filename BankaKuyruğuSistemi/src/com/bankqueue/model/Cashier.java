@@ -4,9 +4,8 @@ import com.bankqueue.datastructures.CustomQueue;
 
 import java.util.List;
 
-// ═══════════════════════════════════════════════════════════════
-//  GİŞE MODELİ
-// ═══════════════════════════════════════════════════════════════
+//  GİŞE MODELİ, banka sorumlusu
+
 public class Cashier {
     private final int id;
     private final CustomQueue<Customer> queue = new CustomQueue<>();

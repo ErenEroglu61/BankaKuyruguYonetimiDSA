@@ -6,13 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
 
-/**
- * ┌─────────────────────────────────────────────┐
- *   UI YARDIMCI KATMANI
- *   Tüm Swing bileşen fabrika metodları burada.
- *   Hiçbir iş mantığı içermez — sadece görünüm.
- * └─────────────────────────────────────────────┘
- */
+// UI şablonudur. Bir mantıksal operasyon içermez
+
 public final class UIHelper {
 
     private UIHelper() {}   // Instantiate edilemez

@@ -6,13 +6,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * ┌─────────────────────────────────────────────┐
- *   TEMA KATMANI
- *   theme.json dosyasından renkleri yükler.
- *   Dosya yoksa varsayılan "Ember Dark" kullanılır.
- * └─────────────────────────────────────────────┘
- */
+// Tema düzenleyici theme.json ile beraber çalışır. Ember Dark Default
+
 public class Theme {
 
     public static Color BG, SURFACE, SURF2, BORDER;
@@ -21,7 +16,7 @@ public class Theme {
     public static String FONT_FAMILY = "Segoe UI";
 
     static {
-        loadFromJson("theme.json");
+        loadFromJson("BankaKuyruğuSistemi/src/com/bankqueue/config/theme.json");
     }
 
     //JSON Okuyucu

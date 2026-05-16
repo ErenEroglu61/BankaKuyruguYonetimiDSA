@@ -7,23 +7,7 @@ import java.util.List;
 import com.bankqueue.simulation.SimulationEngine;
 import com.bankqueue.ui.*;
 import com.bankqueue.model.*;
-/**
- * ┌─────────────────────────────────────────────┐
- *   ANA GUI KATMANI
- *   Sadece görünüm + SimulationEngine çağrısı.
- *   İş mantığı içermez.
- * └─────────────────────────────────────────────┘
- *  Dosya yapısı:
- *  ├── theme.json          ← Renk paleti
- *  ├── Theme.java          ← JSON → Color
- *  ├── UIHelper.java       ← Swing bileşen fabrikası
- *  ├── DataStructures.java ← Node, CustomQueue, MinHeap
- *  ├── Models.java         ← Customer, Cashier, Appointment
- *  ├── SimulationEngine.java ← Tüm iş mantığı
- *  ├── src.com.bankqueue.model.BankData.java       ← File I/O (CSV + TXT)
- *  ├── ChartPanel.java     ← Grafik bileşeni
- *  └── BankaKuyrukSistemi.java ← Bu dosya (GUI)
- */
+
 public class Main extends JFrame
         implements SimulationEngine.EventListener {
 
@@ -118,11 +102,11 @@ public class Main extends JFrame
         tp.setForeground(Theme.FG);
         tp.setFont(Theme.bold(13));
 
-        tp.addTab("📋 Kuyruk",      buildQueueTab());
-        tp.addTab("🏪 Gişeler",     buildCashierTab());
-        tp.addTab("⏰ Randevular",  buildApptTab());
-        tp.addTab("📊 Analiz",      buildChartTab());
-        tp.addTab("📜 Geçmiş",      buildHistoryTab());
+        tp.addTab("Kuyruk",      buildQueueTab());
+        tp.addTab("Gişeler",     buildCashierTab());
+        tp.addTab("Randevular",  buildApptTab());
+        tp.addTab("Analiz",      buildChartTab());
+        tp.addTab("Geçmiş",      buildHistoryTab());
         return tp;
     }
 
@@ -200,8 +184,8 @@ public class Main extends JFrame
         waitChart  = new ChartPanel("Bekleme Süresi (sn)", engine.waitSamples,  Theme.PRIMARY);
         queueChart = new ChartPanel("Kuyruk Yoğunluğu",    engine.queueSamples, Theme.SUCCESS);
 
-        p.add(wrapChart(waitChart,  "📈  Bekleme Süresi"));
-        p.add(wrapChart(queueChart, "📉  Kuyruk Yoğunluğu"));
+        p.add(wrapChart(waitChart,  "Bekleme Süresi"));
+        p.add(wrapChart(queueChart, "Kuyruk Yoğunluğu"));
         return p;
     }
 
@@ -259,11 +243,11 @@ public class Main extends JFrame
     private JPanel buildAddBox() {
         JPanel p = UIHelper.surfacePanel(new BorderLayout(6, 6));
         p.setBorder(BorderFactory.createCompoundBorder(
-            UIHelper.titledBorder("  ➕  Müşteri Ekle  "), UIHelper.padding(8, 8)));
+            UIHelper.titledBorder("Müşteri Ekle  "), UIHelper.padding(8, 8)));
         p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
         JTextField tfName = UIHelper.textField();
-        JCheckBox  cbVip  = new JCheckBox("VIP ⭐");
+        JCheckBox  cbVip  = new JCheckBox("VIP");
         cbVip.setForeground(Theme.WARNING);
         cbVip.setBackground(Theme.SURFACE);
         cbVip.setFont(Theme.bold(12));
@@ -302,7 +286,7 @@ public class Main extends JFrame
             UIHelper.titledBorder("  ⚙  Simülasyon  "), UIHelper.padding(8, 8)));
         p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
-        btnStartStop = UIHelper.button("▶  Başlat", Theme.SUCCESS);
+        btnStartStop = UIHelper.button("Başlat", Theme.SUCCESS);
         btnStartStop.addActionListener(e -> toggleSim());
 
         sldSpeed = new JSlider(1, 10, 3);
@@ -324,12 +308,12 @@ public class Main extends JFrame
         JPanel p = UIHelper.panel(new GridLayout(1, 2, 4, 0));
         p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
 
-        JButton btnSave = UIHelper.button("💾 Kaydet", Theme.PURPLE);
+        JButton btnSave = UIHelper.button("Kaydet", Theme.PURPLE);
         btnSave.addActionListener(e -> {
             engine.save();
             JOptionPane.showMessageDialog(this, "Veriler kaydedildi ✅", "Kayıt", JOptionPane.INFORMATION_MESSAGE);
         });
-        JButton btnLoad = UIHelper.button("📂 Yükle", new Color(71, 85, 105));
+        JButton btnLoad = UIHelper.button("Yükle", new Color(71, 85, 105));
         btnLoad.addActionListener(e -> {
             engine.load();
             // Geçmiş tablosunu sıfırla + doldur
@@ -341,7 +325,7 @@ public class Main extends JFrame
     }
 
     private JButton buildResetBtn() {
-        JButton b = UIHelper.button("🔄  Sıfırla", new Color(100, 116, 139));
+        JButton b = UIHelper.button("Sıfırla", new Color(100, 116, 139));
         b.addActionListener(e -> {
             simTimer.stop(); running = false;
             btnStartStop.setText("▶  Başlat");
@@ -362,7 +346,7 @@ public class Main extends JFrame
         logArea.setBorder(UIHelper.padding(4, 8));
 
         JScrollPane sc = new JScrollPane(logArea);
-        sc.setBorder(UIHelper.titledBorder("  📝  İşlem Geçmişi  "));
+        sc.setBorder(UIHelper.titledBorder("İşlem Geçmişi  "));
         sc.setPreferredSize(new Dimension(0, 118));
 
         JPanel wrap = UIHelper.panel(new BorderLayout());
@@ -386,12 +370,12 @@ public class Main extends JFrame
             simTimer.start();
             btnStartStop.setText("⏸  Durdur");
             btnStartStop.setBackground(Theme.DANGER);
-            onLog("▶️  Simülasyon başladı.");
+            onLog("Simülasyon başladı.");
         } else {
             simTimer.stop();
             btnStartStop.setText("▶  Devam Et");
             btnStartStop.setBackground(Theme.SUCCESS);
-            onLog("⏸  Simülasyon durdu.");
+            onLog("Simülasyon durdu.");
         }
     }
 
@@ -459,7 +443,7 @@ public class Main extends JFrame
     private void addHistoryRow(Customer c) {
         historyModel.addRow(new Object[]{
             "#" + c.getId(), c.getName(),
-            c.getType() == Customer.Type.VIP ? "⭐ VIP" : "Norm.",
+            c.getType() == Customer.Type.VIP ? "VIP" : "Norm.",
             "G#" + (c.getCashierNo() < 0 ? "-" : c.getCashierNo()),
             SimulationEngine.fmt(c.getArrivalSecond()),
             c.isServed() ? SimulationEngine.fmt(c.getServedSecond()) : "-",
@@ -491,7 +475,7 @@ public class Main extends JFrame
         JPanel center = UIHelper.panel(new BorderLayout(0, 2));
         center.setBackground(bg);
         center.add(UIHelper.label(c.getName(), Theme.FG, 13, Font.BOLD), BorderLayout.CENTER);
-        String sub = vip ? "⭐ VIP" : (first ? "Sıradaki" : "");
+        String sub = vip ? "VIP" : (first ? "Sıradaki" : "");
         if (!sub.isEmpty())
             center.add(UIHelper.label(sub, vip ? Theme.WARNING : Theme.SUCCESS, 10, Font.BOLD),
                        BorderLayout.SOUTH);
@@ -515,7 +499,7 @@ public class Main extends JFrame
 
         JPanel header = UIHelper.surfacePanel(new BorderLayout(4, 0));
         header.add(UIHelper.label("Gişe #" + cs.getId(), Theme.FG, 14, Font.BOLD), BorderLayout.WEST);
-        header.add(UIHelper.label(cs.isOpen() ? "● Açık" : "● Kapalı",
+        header.add(UIHelper.label(cs.isOpen() ? "Açık" : "Kapalı",
                                   cs.isOpen() ? Theme.SUCCESS : Theme.DANGER, 11, Font.BOLD),
                    BorderLayout.EAST);
 
@@ -554,7 +538,7 @@ public class Main extends JFrame
         card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         card.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        card.add(UIHelper.label("📅 " + a.getCustomerName(), Theme.FG, 13, Font.BOLD),
+        card.add(UIHelper.label(a.getCustomerName(), Theme.FG, 13, Font.BOLD),
                  BorderLayout.WEST);
 
         JPanel right = UIHelper.surfacePanel(new BorderLayout(0, 2));

@@ -1,13 +1,7 @@
 package com.bankqueue.datastructures;
 
-/**
- * ┌─────────────────────────────────────────────┐
- * MIN-HEAP — Dizi Tabanlı Tam İkili Ağaç
- * insert     → O(log n)
- * extractMin → O(log n)
- * peekMin    → O(1)
- * └─────────────────────────────────────────────┘
- */
+// Min-heap dizi tabanlı tam ikili ağaç
+
 public class MinHeap<T extends Comparable<T>> {
     private final java.util.ArrayList<T> h = new java.util.ArrayList<>();
 

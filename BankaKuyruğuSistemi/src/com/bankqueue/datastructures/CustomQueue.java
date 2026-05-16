@@ -1,12 +1,7 @@
 package com.bankqueue.datastructures;
 
-/**
- * ┌─────────────────────────────────────────────┐
- * FIFO KUYRUK — Tek Yönlü Bağlı Liste
- * enqueue → O(1)  |  dequeue → O(1)
- * peek    → O(1)  |  toList  → O(n)
- * └─────────────────────────────────────────────┘
- */
+// Fifo queue - Singly Linked List
+
 public class CustomQueue<T> {
     private Node<T> front, rear;
     private int size;

@@ -8,13 +8,8 @@ import java.util.List;
 import com.bankqueue.model.*;
 import com.bankqueue.datastructures.*;
 
-/**
- * ┌─────────────────────────────────────────────┐
- *   SİMÜLASYON MOTORU
- *   Tüm iş mantığı burada — UI'dan bağımsız.
- *   GUI sadece bu sınıfı çağırır.
- * └─────────────────────────────────────────────┘
- */
+// Simülasyon motoru
+
 public class SimulationEngine {
 
     public int     simTime      = 0;

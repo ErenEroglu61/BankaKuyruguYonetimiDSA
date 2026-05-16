@@ -2,9 +2,8 @@ package com.bankqueue.model;
 
 import com.bankqueue.simulation.SimulationEngine;
 
-// ═══════════════════════════════════════════════════════════════
 //  RANDEVU MODELİ  (Min-Heap'te saklanır)
-// ═══════════════════════════════════════════════════════════════
+
 public class Appointment implements Comparable<Appointment> {
     private static int counter = 1;
 

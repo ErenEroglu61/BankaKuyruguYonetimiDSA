@@ -1,9 +1,12 @@
 package com.bankqueue.datastructures;
 
 public class Node<T> {
-    T       data;
+    T data;
     Node<T> next;
-    Node(T data) { this.data = data; this.next = null; }
+    Node(T data) {
+        this.data = data;
+        this.next = null;
+    }
 }
 
 
