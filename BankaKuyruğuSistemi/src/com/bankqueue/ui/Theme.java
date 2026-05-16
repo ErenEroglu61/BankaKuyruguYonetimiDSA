@@ -24,7 +24,7 @@ public class Theme {
         loadFromJson("theme.json");
     }
 
-    // ── JSON Okuyucu (harici kütüphane olmadan) ───────────────────
+    //JSON Okuyucu
     private static void loadFromJson(String path) {
         Map<String, String> map = new HashMap<>();
         File f = new File(path);
@@ -53,7 +53,6 @@ public class Theme {
             System.out.println("[Theme] theme.json bulunamadı, varsayılan 'Ember Dark' kullanılıyor.");
         }
 
-        // Renkleri ata (map'te yoksa varsayılan)
         BG      = hex(map, "bg",      "#0f0e17");
         SURFACE = hex(map, "surface", "#1f1d2e");
         SURF2   = hex(map, "surf2",   "#2d2b3d");
@@ -74,7 +73,6 @@ public class Theme {
         catch (NumberFormatException e) { return Color.decode(fallback); }
     }
 
-    // ── Font Fabrikası ────────────────────────────────────────────
     public static Font font(int style, int size) {
         return new Font(FONT_FAMILY, style, size);
     }

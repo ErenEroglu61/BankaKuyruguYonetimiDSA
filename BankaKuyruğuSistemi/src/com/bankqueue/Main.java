@@ -27,37 +27,21 @@ import com.bankqueue.model.*;
 public class Main extends JFrame
         implements SimulationEngine.EventListener {
 
-    // ── Motor ─────────────────────────────────────────────────────
     private final SimulationEngine engine = new SimulationEngine();
-
-    // ── Simülasyon Zamanlayıcısı ──────────────────────────────────
     private javax.swing.Timer simTimer;
     private boolean           running = false;
-
-    // ── Üst Bar ───────────────────────────────────────────────────
     private JLabel lblTime, lblQTotal, lblServed, lblAvgWait;
-
-    // ── Kontrol ───────────────────────────────────────────────────
     private JButton   btnStartStop;
     private JSlider   sldSpeed;
     private JTextArea logArea;
-
-    // ── Sekmeler ──────────────────────────────────────────────────
     private JPanel queueCardsPanel;
     private JPanel cashierPanel;
-
-    // Randevu
     private JTextField tfApptName;
     private JSpinner   spnApptMin;
     private JPanel     apptListPanel;
-
-    // Grafik
     private ChartPanel waitChart, queueChart;
-
-    // Geçmiş
     private DefaultTableModel historyModel;
 
-    // ─────────────────────────────────────────────────────────────
     public Main() {
         super("🏦  Banka Kuyruk Sistemi");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -72,9 +56,6 @@ public class Main extends JFrame
         onStateChanged();
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  SimulationEngine.EventListener
-    // ═══════════════════════════════════════════════════════════════
     @Override
     public void onLog(String msg) {
         SwingUtilities.invokeLater(() -> {
@@ -88,9 +69,6 @@ public class Main extends JFrame
         SwingUtilities.invokeLater(this::refreshAll);
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  UI İnşa
-    // ═══════════════════════════════════════════════════════════════
     private void buildUI() {
         JPanel root = UIHelper.panel(new BorderLayout(10, 10));
         root.setBorder(UIHelper.padding(12, 12));
@@ -102,7 +80,6 @@ public class Main extends JFrame
         setContentPane(root);
     }
 
-    // ── Üst Bar ───────────────────────────────────────────────────
     private JPanel buildTopBar() {
         JPanel p = UIHelper.surfacePanel(new BorderLayout());
         p.setBorder(BorderFactory.createCompoundBorder(
@@ -125,7 +102,6 @@ public class Main extends JFrame
         return p;
     }
 
-    // ── Merkez ────────────────────────────────────────────────────
     private JSplitPane buildCenter() {
         JSplitPane sp = new JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT, buildTabs(), buildSidePanel());
@@ -136,9 +112,6 @@ public class Main extends JFrame
         return sp;
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  SEKMELER
-    // ═══════════════════════════════════════════════════════════════
     private JTabbedPane buildTabs() {
         JTabbedPane tp = new JTabbedPane();
         tp.setBackground(Theme.BG);
@@ -153,7 +126,6 @@ public class Main extends JFrame
         return tp;
     }
 
-    // ── Sekme 1: Kuyruk ───────────────────────────────────────────
     private JScrollPane buildQueueTab() {
         queueCardsPanel = UIHelper.panel(null);
         queueCardsPanel.setLayout(new BoxLayout(queueCardsPanel, BoxLayout.Y_AXIS));
@@ -161,7 +133,6 @@ public class Main extends JFrame
         return UIHelper.scroll(queueCardsPanel);
     }
 
-    // ── Sekme 2: Gişeler ──────────────────────────────────────────
     private JPanel buildCashierTab() {
         JPanel p = UIHelper.panel(new BorderLayout(8, 8));
         p.setBorder(UIHelper.padding(10, 10));
@@ -188,7 +159,6 @@ public class Main extends JFrame
         return p;
     }
 
-    // ── Sekme 3: Randevular ───────────────────────────────────────
     private JPanel buildApptTab() {
         JPanel p = UIHelper.panel(new BorderLayout(8, 10));
         p.setBorder(UIHelper.padding(10, 10));
@@ -223,7 +193,6 @@ public class Main extends JFrame
         return p;
     }
 
-    // ── Sekme 4: Analiz ───────────────────────────────────────────
     private JPanel buildChartTab() {
         JPanel p = UIHelper.panel(new GridLayout(2, 1, 8, 8));
         p.setBorder(UIHelper.padding(10, 10));
@@ -244,7 +213,6 @@ public class Main extends JFrame
         return w;
     }
 
-    // ── Sekme 5: Geçmiş ───────────────────────────────────────────
     private JScrollPane buildHistoryTab() {
         String[] cols = {"#","Ad","Tür","Gişe","Varış","Servis","Bekleme"};
         historyModel = new DefaultTableModel(cols, 0) {
@@ -274,9 +242,6 @@ public class Main extends JFrame
         return sc;
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  SAĞ PANEL
-    // ═══════════════════════════════════════════════════════════════
     private JPanel buildSidePanel() {
         JPanel p = UIHelper.panel(null);
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -405,9 +370,6 @@ public class Main extends JFrame
         return wrap;
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  SİMÜLASYON TIMER
-    // ═══════════════════════════════════════════════════════════════
     private void buildTimer() {
         simTimer = new javax.swing.Timer(400, e -> {
             engine.tick();
@@ -433,9 +395,6 @@ public class Main extends JFrame
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  EKRAN YENİLEME
-    // ═══════════════════════════════════════════════════════════════
     private void refreshAll() {
         lblQTotal.setText("Kuyruk: " + engine.totalQueueSize());
         lblServed.setText("Servis: " + engine.totalServed);
@@ -506,12 +465,8 @@ public class Main extends JFrame
             c.isServed() ? SimulationEngine.fmt(c.getServedSecond()) : "-",
             c.isServed() ? c.getWaitTime() + "s" : "-"
         });
-        // Yeni servis edilen her müşteri de tarihe eklensin
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  KARTLAR
-    // ═══════════════════════════════════════════════════════════════
     private JPanel customerCard(Customer c, int pos, int cashierId) {
         boolean first = (pos == 0);
         boolean vip   = c.getType() == Customer.Type.VIP;
@@ -536,7 +491,7 @@ public class Main extends JFrame
         JPanel center = UIHelper.panel(new BorderLayout(0, 2));
         center.setBackground(bg);
         center.add(UIHelper.label(c.getName(), Theme.FG, 13, Font.BOLD), BorderLayout.CENTER);
-        String sub = vip ? "⭐ VIP" : (first ? "● Sıradaki" : "");
+        String sub = vip ? "⭐ VIP" : (first ? "Sıradaki" : "");
         if (!sub.isEmpty())
             center.add(UIHelper.label(sub, vip ? Theme.WARNING : Theme.SUCCESS, 10, Font.BOLD),
                        BorderLayout.SOUTH);
@@ -611,7 +566,6 @@ public class Main extends JFrame
         return card;
     }
 
-    // ── Yardımcılar ───────────────────────────────────────────────
     private JLabel sectionLabel(String text) {
         JLabel l = UIHelper.label("— " + text + " —", Theme.PRIMARY, 11, Font.BOLD);
         l.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -627,9 +581,6 @@ public class Main extends JFrame
         return p;
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    //  MAIN
-    // ═══════════════════════════════════════════════════════════════
     static void main(String[] args) {
         try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
         catch (Exception ignored) {}

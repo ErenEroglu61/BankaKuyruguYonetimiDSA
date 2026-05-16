@@ -17,7 +17,6 @@ public final class UIHelper {
 
     private UIHelper() {}   // Instantiate edilemez
 
-    // ── Etiket ────────────────────────────────────────────────────
     public static JLabel label(String text, Color color, int size, int style) {
         JLabel l = new JLabel(text);
         l.setForeground(color);
@@ -29,7 +28,6 @@ public final class UIHelper {
         return label(text, color, size, Font.PLAIN);
     }
 
-    // ── Buton ─────────────────────────────────────────────────────
     public static JButton button(String text, Color bg) {
         JButton b = new JButton(text) {
             @Override protected void paintComponent(Graphics g) {
@@ -64,7 +62,6 @@ public final class UIHelper {
         });
     }
 
-    // ── TextField ─────────────────────────────────────────────────
     public static JTextField textField() {
         JTextField tf = new JTextField();
         tf.setBackground(Theme.SURF2);
@@ -76,7 +73,6 @@ public final class UIHelper {
         return tf;
     }
 
-    // ── Spinner ───────────────────────────────────────────────────
     public static JSpinner spinner(int val, int min, int max, int step) {
         JSpinner sp = new JSpinner(new SpinnerNumberModel(val, min, max, step));
         sp.setBackground(Theme.SURFACE);
@@ -89,7 +85,6 @@ public final class UIHelper {
         return sp;
     }
 
-    // ── Panel ─────────────────────────────────────────────────────
     public static JPanel panel(LayoutManager lm) {
         JPanel p = new JPanel(lm);
         p.setBackground(Theme.BG);
@@ -102,7 +97,6 @@ public final class UIHelper {
         return p;
     }
 
-    // ── ScrollPane ────────────────────────────────────────────────
     public static JScrollPane scroll(Component view) {
         JScrollPane sc = new JScrollPane(view);
         sc.setBackground(Theme.BG);
@@ -130,7 +124,6 @@ public final class UIHelper {
         });
     }
 
-    // ── Kenarlık / Boşluk ─────────────────────────────────────────
     public static Border roundBorder(int arc, Color color) {
         return new RoundBorder(arc, color);
     }
@@ -154,7 +147,6 @@ public final class UIHelper {
         return Box.createRigidArea(new Dimension(w, 0));
     }
 
-    // ── Yuvarlak Kenarlık (inner class) ──────────────────────────
     public static class RoundBorder extends AbstractBorder {
         private final int arc;
         private final Color color;

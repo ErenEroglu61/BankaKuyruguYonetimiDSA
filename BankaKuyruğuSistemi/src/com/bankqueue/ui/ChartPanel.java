@@ -48,7 +48,6 @@ public class ChartPanel extends JPanel {
 
         int maxVal = data.isEmpty() ? 10 : Math.max(1, data.stream().mapToInt(v->v).max().orElse(10));
 
-        // Izgara + Y etiketleri
         g2.setFont(Theme.plain(9));
         int gridLines = 4;
         for (int i = 0; i <= gridLines; i++) {
@@ -62,7 +61,7 @@ public class ChartPanel extends JPanel {
             g2.drawString(String.valueOf((int)((double)i/gridLines*maxVal)), 4, y + 4);
         }
 
-        // Veri yok mesajı
+        // Veri yok mesaj
         if (data.isEmpty()) {
             g2.setColor(Theme.FG2);
             g2.setFont(Theme.italic(11));
